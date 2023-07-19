@@ -6,4 +6,11 @@ export class SecurityCodeRepositoryStub implements SecurityCodeRepository {
   async create (): Promise<SecurityCodeEntity> {
     return securityCodeMock
   }
+
+  async findByUserAndCodeAndNotUsedAndExpired (): Promise<SecurityCodeEntity> {
+    return securityCodeMock
+  }
+
+  async update (): Promise<void> {
+  }
 }

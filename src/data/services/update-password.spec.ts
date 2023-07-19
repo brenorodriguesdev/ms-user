@@ -72,7 +72,7 @@ describe('UpdatePasswordService', () => {
     expect(updateSpy).toHaveBeenCalledWith({ ...user, password: 'stringHash' })
   })
 
-  test('should throw if findByEmail throws', async () => {
+  test('should throw if findById throws', async () => {
     const { sut, userRepository } = makeSut()
     jest.spyOn(userRepository, 'findById').mockRejectedValueOnce(new Error())
     const promise = sut.update(makeData())

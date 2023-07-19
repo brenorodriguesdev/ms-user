@@ -7,7 +7,14 @@ export class UserRepositoryStub implements UserRepository {
     return userMock
   }
 
+  async update (): Promise<void> {
+  }
+
   async findByEmail (): Promise<UserEntity> {
+    return userMock
+  }
+
+  async findById (): Promise<UserEntity> {
     return userMock
   }
 }

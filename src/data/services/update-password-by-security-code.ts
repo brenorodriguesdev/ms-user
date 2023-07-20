@@ -14,15 +14,13 @@ export class UpdatePasswordBySecurityCodeService implements UpdatePasswordBySecu
   async update ({ idUser, code, passwordNew }: UpdatePasswordBySecurityCodeModel): Promise<void | Error> {
     const user = await this.userRepository.findById(idUser)
     if (!user) {
-      return new Error('Esse usuário não existe')
+      return new Error('Esse usuário não existe!')
     }
     const securityCode = await this.securityCodeRepository.findByUserAndCodeAndNotUsedAndExpired(idUser, code)
     if (!securityCode) {
       return new Error('Esse código de segurança é inválido ou já expirou!')
     }
-    securityCode.used = true
-    securityCode.usedAt = Date.now()
-    await this.securityCodeRepository.update(securityCode)
+    await this.securityCodeRepository.update({ ...securityCode, used: true, usedAt: Date.now() })
     const password = await this.hasher.hash(passwordNew)
     await this.userRepository.update({ ...user, password })
   }

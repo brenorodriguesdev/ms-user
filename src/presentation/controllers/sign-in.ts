@@ -3,7 +3,7 @@ import { type SignInUseCase } from '../../domain/use-cases/sign-in'
 import { type Validator } from '../../validation/contracts/validator'
 import { type Controller } from '../contracts/controller'
 import { type HttpRequest, type HttpResponse } from '../contracts/http'
-import { badRequest, ok, serverError } from '../contracts/http-helper'
+import { badRequest, ok, serverError, unauthorized } from '../contracts/http-helper'
 
 export class SignInController implements Controller<SignInModel, SignInResultModel | Error> {
   constructor (
@@ -18,6 +18,9 @@ export class SignInController implements Controller<SignInModel, SignInResultMod
         return badRequest(error)
       }
       const signInResult = await this.signInUseCase.sign(httpRequest.body)
+      if (signInResult instanceof Error) {
+        return unauthorized(signInResult)
+      }
       return ok(signInResult)
     } catch (error) {
       return serverError()
